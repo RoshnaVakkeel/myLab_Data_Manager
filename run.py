@@ -13,12 +13,14 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('mylab_data')
 
-
-#To check connection with the google sheet
+# To connect to the inventory
 chem_inventory = SHEET.worksheet('chem_inventory')
 data = chem_inventory.get_all_values()
-#pprint(data)
 
+# Function to display all data
+def display_all():
+    print('Displaying all the chemicals in the list with its details \n')
+    pprint(data)
 
 # Welcome message to the user
 print('\nWelcome to MyLab Data Management Tool !!')
@@ -52,8 +54,7 @@ while(selection != '8'):
     # if else conditions for user selection
     
     if selection == '1':
-        print('Displaying all the chemicals in the list with its details \n')
-        pprint(data)
+        display_all()
     elif selection == '2':
         print('Displaying the chemical category with its details (using typed in keyword) \n')
     elif selection == '3':
