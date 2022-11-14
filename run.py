@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -12,9 +13,12 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('mylab_data')
 
+
+#To check connection with the google sheet
 chem_inventory = SHEET.worksheet('chem_inventory')
 data = chem_inventory.get_all_values()
-#print(data)
+#pprint(data)
+
 
 # Welcome message to the user
 print('\nWelcome to MyLab Data Management Tool !!')
@@ -49,6 +53,7 @@ while(selection != '8'):
     
     if selection == '1':
         print('Displaying all the chemicals in the list with its details \n')
+        pprint(data)
     elif selection == '2':
         print('Displaying the chemical category with its details (using typed in keyword) \n')
     elif selection == '3':
@@ -62,9 +67,9 @@ while(selection != '8'):
     elif selection == '7':
         print('Deleting the selected chemical details \n')
     elif selection == '8':
-        print('Exit \n')
+        print('You entered exit. See you later then!! \n')
     else:
-        print('Appropriate number was not entered! Please select from the list provided.')
+        print('Appropriate number was not entered! Please select from the list provided.\n')
     break
 
 
