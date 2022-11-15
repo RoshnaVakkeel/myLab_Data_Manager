@@ -42,8 +42,11 @@ def display_chem_keyword_search():
     print("Enter chemical name you are looking for: ")
     i = input()
 
-    df1 = df[df['Chemical Name'].str.contains(i)]
-    print(df1)
+    if i not in df:
+        df1 = df[df['Chemical Name'].str.contains(i)]
+        print(df1)
+    else:
+       print("Oops! invalid entry. Try again..") 
 
 # Set an initial value for selection other than the value for exit i.e. 8.
 selection = ''
@@ -54,7 +57,7 @@ When user selects an option by making an input, function will get triggered.
 """
 while(selection != '8'):
     #Providing users with options to select from.
-    print('1) Display all the chemicals in the list with its details')
+    print('1) Display all the chemicals chemical inventory with its details')
     print('2) Display the chemicals and details based on chemical name / keyword search')
     print('3) Display the chemicals and details based on location search')
     print('4) Display the chemicals and details based on quantity search')
