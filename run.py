@@ -18,42 +18,50 @@ SHEET = GSPREAD_CLIENT.open('mylab_data')
 print('\nWelcome to MyLab Data Management Tool !!')
 print('Your guide to locating and updating chemical inventory.\n')
 
-# To connect to the chem_inventory worksheet of myLab spreadsheet.
+# Connects to chem_inventory worksheet of myLab spreadsheet.
 chem_inventory = SHEET.worksheet('chem_inventory')
 data = chem_inventory.get_all_values()
 
+
 def display_all():
     """
-    Function to display all data for if user makes selection 1 from the list.
+    Diplays all data upon selection 1.
     """
     print('Displaying all the chemicals in the list with its details \n')
     pprint(data)
 
+
 def display_chem_keyword_search():
     """
-    Function to display all the data matching the keyword search from the chemical inventory column. 
-    If user makes selection 2 from the list, user will be asked a question to enter the keyword.
-    Upon entering the keyword, the whole row containing the details will be displayed.
+    Diplays data matching Chemical Name keyword.
+    Upon option 2 selection, user will be asked for keyword input.
+    Upon input, all the rows containing the keyword will be shown.
     """
     print('Displaying chemicals and details based on chemical name / keyword search \n')
     df = pd.DataFrame(chem_inventory.get_all_records())
 
-    print("Enter chemical name you are looking for: ")
-    i = input()
+    while True:
+        print("\nEnter chemical name you are looking for: ")
+        i = input()
 
-    if i not in df:
-        df1 = df[df['Chemical Name'].str.contains(i)]
-        print(df1)
-    elif i == '':
-        print("Please enter something!")
-    else:
-        print("Oops! invalid entry. Try again..")
+        if i.strip() != '':
+            print("Oops! invalid entry. Try again..\n")
+        else:
+            print("Ok")
+            
+        if i not in df:
+            df1 = df[df['Chemical Name'].str.contains(i)]
+            print(df1)
+            break
+
+
+
             
 def display_destination_keyword_search():
-    """
-    Function to display all the data matching the keyword search of the location. 
-    If user makes selection 3 from the list, user will be asked a question to enter the keyword.
-    Upon entering the keyword, the whole row containing the details will be displayed.
+    """'
+    Diplays data matching destination keyword.
+    Upon option 3 selection, user will be asked for keyword input.
+    Upon input, all rows containing the keyword will be shown.
     """
     print('Displaying the chemicals and details based on destination search \n')
     df = pd.DataFrame(chem_inventory.get_all_records())
@@ -67,11 +75,12 @@ def display_destination_keyword_search():
     else:
         print("Oops! invalid entry. Try again..") 
 
+
 def display_quantity_search():
     """
-    Function to display all the data matching the quantities entered. 
-    If user makes selection 4 from the list, user will be asked a question to enter the keyword.
-    Upon entering the keyword, the whole row containing the details will be displayed.
+    Diplays data matching quantity entered.
+    Upon option 4 selection, user will be asked for keyword input.
+    Upon input, all rows containing the keyword will be shown.
     """
     print('Displaying the chemicals and details based on destination search \n')
     df = pd.DataFrame(chem_inventory.get_all_records())
@@ -83,7 +92,25 @@ def display_quantity_search():
         df1 = df[df['Total Amount'].str.contains(i, case=False, na=False)]
         print(df1)
     else:
-       print("Oops! Are you sure you entered the unit correctly?") 
+        print("Oops! Are you sure you entered the unit correctly?") 
+
+
+def display_brand_search():
+    """
+    Diplays data matching brand name.
+    Upon option 4 selection, user will be asked for keyword input.
+    Upon input, all rows containing the keyword will be shown.
+    """
+    print('Displaying the chemicals and details based on destination search \n')
+    df = pd.DataFrame(chem_inventory.get_all_records())
+
+    print("Enter the the quantity of the chemical: ")
+    i = input()
+
+    if i not in df:
+        df1 = df[df['Total Amount'].str.contains(i, case=False, na=False)]
+        print(df1)     
+
 
 # Set an initial value for selection other than the value for exit i.e. 8.
 selection = ''
@@ -128,5 +155,3 @@ while(selection != '8'):
     else:
         print('Appropriate number was not entered! Please select from the list provided.\n')
     break
-
-
