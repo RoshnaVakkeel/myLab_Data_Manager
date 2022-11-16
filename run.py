@@ -18,8 +18,12 @@ SHEET = GSPREAD_CLIENT.open('mylab_data')
 print('\nWelcome to MyLab Data Management Tool !!')
 print('Your guide to locating and updating chemical inventory.\n')
 
-# Connects to chem_inventory worksheet of myLab spreadsheet.
+# Connects the worksheets of myLab spreadsheet.
 chem_inventory = SHEET.worksheet('chem_inventory')
+assess_list = SHEET.worksheet('assess')
+storage_list = SHEET.worksheet('storage')
+deleted_list = SHEET.worksheet('deleted_items')
+
 data = chem_inventory.get_all_values()
 
 
@@ -37,24 +41,21 @@ def display_chem_keyword_search():
     Upon option 2 selection, user will be asked for keyword input.
     Upon input, all the rows containing the keyword will be shown.
     """
-    print('Displaying chemicals and details based on chemical name / keyword search \n')
+    
     df = pd.DataFrame(chem_inventory.get_all_records())
 
     while True:
         print("\nEnter chemical name you are looking for: ")
         i = input()
-
-        if i.strip() != '':
-            print("Oops! invalid entry. Try again..\n")
-        else:
-            print("Ok")
             
         if i not in df:
-            df1 = df[df['Chemical Name'].str.contains(i)]
-            print(df1)
+            print('\nDisplaying chemicals and details:\n')
+            print(df[df['Chemical Name'].str.contains(i)])
+
+        if i is df:
+            print("Oops! invalid entry. Try again..\n")
+        else:
             break
-
-
 
             
 def display_destination_keyword_search():
@@ -72,8 +73,6 @@ def display_destination_keyword_search():
     if i not in df:
         df1 = df[df['Destination'].str.contains(i)]
         print(df1)
-    else:
-        print("Oops! invalid entry. Try again..") 
 
 
 def display_quantity_search():
@@ -108,10 +107,41 @@ def display_brand_search():
     i = input()
 
     if i not in df:
-        df1 = df[df['Total Amount'].str.contains(i, case=False, na=False)]
-        print(df1)     
+        df1 = df[df['Total Amount'].str.contains(i, case = False, na = False)]
+        print(df1)  
 
 
+def update_assess_worksheet():
+    """
+    Function to update "assess" worksheet.
+    Upon selection of option 6, input for data will be asked.
+    Upon entry, "assess" worksheet will be updated.
+    """
+
+    print('Updating inventory list \n')
+    
+    # create dataframe 
+    df = pd.DataFrame({'Chemical Name':['Chemical Name'], 'Brand':['Brand'], 'Total Amount':['Total Amount'], 'Amount remaining':['Amount remaining'], 'Destination':['Destination'] })
+    df_values = df.values.tolist()
+    SHEET.values_append('assess', {'valueInputOption': 'RAW'}, {'values': df_values})
+
+    # Manual input of data
+    data_assess = input("Enter your data here: ")
+    processed_data = data_assess.split(",")
+    print(processed_data)
+
+    # To update the assess list
+    assess_list = SHEET.worksheet('assess')
+    assess_list.append_row(processed_data)
+
+    # to track and print empty bottles to enter in assess_list
+    df = pd.DataFrame(chem_inventory.get_all_records())
+    df2 = df[df['Amount remaining'] == '']
+    if True:
+        print(df2) 
+
+
+    
 # Set an initial value for selection other than the value for exit i.e. 8.
 selection = ''
 
@@ -119,7 +149,7 @@ selection = ''
 Loop to run through the options and ask for user input.
 When user selects an option by making an input, function will get triggered. 
 """
-while(selection != '8'):
+while(selection != '9'):
     #Providing users with options to select from.
     print('Get started by selecting from one of these options!!')
     print('1) Display all the chemicals chemical inventory with its details')
@@ -127,9 +157,10 @@ while(selection != '8'):
     print('3) Display the chemicals and details based on destination search')
     print('4) Display the chemicals and details based on quantity search')
     print('5) Display the chemical details based on brand name')
-    print('6) Update inventory list')
-    print('7) Delete finished chemical details')
-    print('8) Exit\n')
+    print('6) Update assess list')
+    print('7) Update assess list')
+    print('8) Delete finished chemical details')
+    print('9) Exit\n')
 
     # Ask for the user's selection.
     selection = (input("What do you want the Data Manager to do? "))
@@ -147,10 +178,12 @@ while(selection != '8'):
     elif selection == '5':
         print('Displaying the chemicals and details based on brand name \n')
     elif selection == '6':
-        print('Updating inventory list \n')
+        update_assess_worksheet()
     elif selection == '7':
-        print('Deleting the selected chemical details \n')
+        print('Updating the storage worksheet \n')
     elif selection == '8':
+        print(' Updating Deleted_items worksheet \n')
+    elif selection == '9':
         print('You entered exit. See you later then!! \n')
     else:
         print('Appropriate number was not entered! Please select from the list provided.\n')
