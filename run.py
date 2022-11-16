@@ -41,13 +41,11 @@ def display_chem_keyword_search():
     Upon option 2 selection, user will be asked for keyword input.
     Upon input, all the rows containing the keyword will be shown.
     """
-    
     df = pd.DataFrame(chem_inventory.get_all_records())
 
     while True:
         print("\nEnter chemical name you are looking for: ")
         i = input()
-            
         if i not in df:
             print('\nDisplaying chemicals and details:\n')
             print(df[df['Chemical Name'].str.contains(i)])
@@ -57,14 +55,14 @@ def display_chem_keyword_search():
         else:
             break
 
-            
+
 def display_destination_keyword_search():
     """'
     Diplays data matching destination keyword.
     Upon option 3 selection, user will be asked for keyword input.
     Upon input, all rows containing the keyword will be shown.
     """
-    print('Displaying the chemicals and details based on destination search \n')
+    print('Displaying the chemicals based on destination search \n')
     df = pd.DataFrame(chem_inventory.get_all_records())
 
     print("Enter the destination name: ")
@@ -81,7 +79,7 @@ def display_quantity_search():
     Upon option 4 selection, user will be asked for keyword input.
     Upon input, all rows containing the keyword will be shown.
     """
-    print('Displaying the chemicals and details based on destination search \n')
+    print('Displaying the chemicals based on destination search \n')
     df = pd.DataFrame(chem_inventory.get_all_records())
 
     print("Enter the the quantity of the chemical: ")
@@ -91,7 +89,7 @@ def display_quantity_search():
         df1 = df[df['Total Amount'].str.contains(i, case=False, na=False)]
         print(df1)
     else:
-        print("Oops! Are you sure you entered the unit correctly?") 
+        print("Oops! Are you sure you entered the unit correctly?")
 
 
 def display_brand_search():
@@ -100,15 +98,15 @@ def display_brand_search():
     Upon option 4 selection, user will be asked for keyword input.
     Upon input, all rows containing the keyword will be shown.
     """
-    print('Displaying the chemicals and details based on destination search \n')
+    print('Displaying the chemicals based on destination search \n')
     df = pd.DataFrame(chem_inventory.get_all_records())
 
     print("Enter the the quantity of the chemical: ")
     i = input()
 
     if i not in df:
-        df1 = df[df['Total Amount'].str.contains(i, case = False, na = False)]
-        print(df1)  
+        df1 = df[df['Total Amount'].str.contains(i, case=False, na=False)]
+        print(df1)
 
 
 def update_assess_worksheet():
@@ -117,56 +115,49 @@ def update_assess_worksheet():
     Upon selection of option 6, input for data will be asked.
     Upon entry, "assess" worksheet will be updated.
     """
+    # create dataframe to append first row into the worksheet
+    df1 = pd.DataFrame({'Chemical Name': ['Chemical Name'], 'Brand': ['Brand'], 'Total Amount': ['Total Amount'], 'Amount remaining': ['Amount remaining'], 'Destination': ['Destination']})
+    df1_values = df1.values.tolist()
+    SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df1_values})
 
-    print('Updating inventory list \n')
-    
-    # create dataframe 
-    df = pd.DataFrame({'Chemical Name':['Chemical Name'], 'Brand':['Brand'], 'Total Amount':['Total Amount'], 'Amount remaining':['Amount remaining'], 'Destination':['Destination'] })
-    df_values = df.values.tolist()
-    SHEET.values_append('assess', {'valueInputOption': 'RAW'}, {'values': df_values})
-
-    # Manual input of data
-    data_assess = input("Enter your data here: ")
-    processed_data = data_assess.split(",")
-    print(processed_data)
-
-    # To update the assess list
-    assess_list = SHEET.worksheet('assess')
-    assess_list.append_row(processed_data)
-
-    # to track and print empty bottles to enter in assess_list
+    # Retrieves undefined bottles to enter in assess_list
     df = pd.DataFrame(chem_inventory.get_all_records())
     df2 = df[df['Amount remaining'] == '']
     if True:
-        print(df2) 
+        print('Updating assess list with retrieved data..\n')
 
+    # concatanate two dataframes together
+    data = [df1, df2]
+    df3 = pd.concat(data)
 
-    
+    # Updates assess worksheet with retrieved data
+    df3_values = df3.values.tolist()
+    SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df3_values})
+
 # Set an initial value for selection other than the value for exit i.e. 8.
 selection = ''
 
 """
 Loop to run through the options and ask for user input.
-When user selects an option by making an input, function will get triggered. 
+When user selects an option by making an input, function will get triggered.
 """
-while(selection != '9'):
-    #Providing users with options to select from.
+while (selection != '9'):
+    # Providing users with options to select from.
     print('Get started by selecting from one of these options!!')
     print('1) Display all the chemicals chemical inventory with its details')
-    print('2) Display the chemicals and details based on chemical name / keyword search')
+    print('2) Display the chemicals and details based on keyword search')
     print('3) Display the chemicals and details based on destination search')
     print('4) Display the chemicals and details based on quantity search')
     print('5) Display the chemical details based on brand name')
-    print('6) Update assess list')
-    print('7) Update assess list')
-    print('8) Delete finished chemical details')
+    print('6) Update assess list with undefined amounts')
+    print('7) Update storage list with unused bottles')
+    print('8) Update deleted list with empty bottles')
     print('9) Exit\n')
 
     # Ask for the user's selection.
     selection = (input("What do you want the Data Manager to do? "))
 
     # if else conditions for user selection
-    
     if selection == '1':
         display_all()
     elif selection == '2':
@@ -186,5 +177,5 @@ while(selection != '9'):
     elif selection == '9':
         print('You entered exit. See you later then!! \n')
     else:
-        print('Appropriate number was not entered! Please select from the list provided.\n')
+        print('Please select from the list provided!\n')
     break
