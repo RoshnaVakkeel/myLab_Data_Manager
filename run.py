@@ -29,7 +29,7 @@ data = chem_inventory.get_all_values()
 
 def display_all():
     """
-    Diplays all data upon selection 1.
+    Diplays all data upon option 1 selection.
     """
     print('Displaying all the chemicals in the list with its details \n')
     pprint(data)
@@ -86,7 +86,7 @@ def display_quantity_search():
     i = input()
 
     if i not in df:
-        df1 = df[df['Total Amount'].str.contains(i, case=False, na=False)]
+        df1 = df[df['Total Amount'].str.fullmatch(i, case=False, na=False)]
         print(df1)
     else:
         print("Oops! Are you sure you entered the unit correctly?")
@@ -95,7 +95,7 @@ def display_quantity_search():
 def display_brand_search():
     """
     Diplays data matching brand name.
-    Upon option 4 selection, user will be asked for keyword input.
+    Upon option 5 selection, user will be asked for keyword input.
     Upon input, all rows containing the keyword will be shown.
     """
     print('Displaying the chemicals based on destination search \n')
@@ -105,7 +105,7 @@ def display_brand_search():
     i = input()
 
     if i not in df:
-        df1 = df[df['Total Amount'].str.contains(i, case=False, na=False)]
+        df1 = df[df['Brand'].str.contains(i, case=False, na=False)]
         print(df1)
 
 
@@ -127,8 +127,8 @@ def update_assess_worksheet():
         print('Updating assess list with retrieved data..\n')
 
     # concatanate two dataframes together
-    data = [df1, df2]
-    df_undefined = pd.concat(data)
+    sum_df = [df1, df2]
+    df_undefined = pd.concat(sum_df)
 
     # Updates assess worksheet with retrieved data
     df_undefined_values = df_undefined.values.tolist()
@@ -145,6 +145,24 @@ def update_assess_worksheet():
     assess_list = SHEET.worksheet('assess')
     assess_list.append_row(processed_data)
 
+def update_storage_worksheet():
+    """
+    Function to update "storage" worksheet.
+    Upon selection of option 7, input for data will be asked.
+    Upon entry, "assess" worksheet will be updated.
+    """
+    # Retrieves full bottles to enter in assess_list
+    df = pd.DataFrame(chem_inventory.get_all_records())
+
+    df_equal = df[df[['Total Amount','Amount remaining']].nunique(axis=1) == 1]
+    print(df_equal)
+
+    # Updates assess worksheet with retrieved data
+    df_equal = df_equal.values.tolist()
+    SHEET.values_update('storage', {'valueInputOption': 'RAW'}, {'values': df_equal})
+
+
+
 
 # Set an initial value for selection other than the value for exit i.e. 8.
 selection = ''
@@ -156,10 +174,10 @@ When user selects an option by making an input, function will get triggered.
 while (selection != '9'):
     # Providing users with options to select from.
     print('Get started by selecting from one of these options!!')
-    print('1) Display all the chemicals chemical inventory with its details')
-    print('2) Display the chemicals and details based on keyword search')
-    print('3) Display the chemicals and details based on destination search')
-    print('4) Display the chemicals and details based on quantity search')
+    print('1) Display all the chemical detail from chemical inventory')
+    print('2) Display the chemical details based on keyword search')
+    print('3) Display the chemical details based on destination search')
+    print('4) Display the chemical details based on quantity search')
     print('5) Display the chemical details based on brand name')
     print('6) Update assess list with undefined amounts')
     print('7) Update storage list with unused bottles')
@@ -179,11 +197,11 @@ while (selection != '9'):
     elif selection == '4':
         display_quantity_search()
     elif selection == '5':
-        print('Displaying the chemicals and details based on brand name \n')
+        display_brand_search()
     elif selection == '6':
         update_assess_worksheet()
     elif selection == '7':
-        print('Updating the storage worksheet \n')
+        update_storage_worksheet()
     elif selection == '8':
         print(' Updating Deleted_items worksheet \n')
     elif selection == '9':
