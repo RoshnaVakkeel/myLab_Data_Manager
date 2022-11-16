@@ -128,11 +128,23 @@ def update_assess_worksheet():
 
     # concatanate two dataframes together
     data = [df1, df2]
-    df3 = pd.concat(data)
+    df_undefined = pd.concat(data)
 
     # Updates assess worksheet with retrieved data
-    df3_values = df3.values.tolist()
-    SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df3_values})
+    df_undefined_values = df_undefined.values.tolist()
+    SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df_undefined_values})
+
+    # Manual input of data
+    print('Do you want to add data? Type in the values:')
+    print('Chemical Name, Brand, Total Amount, Amount Remaining, Destination')
+    data_assess = input("Enter your data here: ")
+    processed_data = data_assess.split(",")
+    print(processed_data)
+
+    # Appends and updates assess worksheet with input data
+    assess_list = SHEET.worksheet('assess')
+    assess_list.append_row(processed_data)
+
 
 # Set an initial value for selection other than the value for exit i.e. 8.
 selection = ''
