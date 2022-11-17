@@ -47,7 +47,7 @@ def display_chem_keyword_search():
     i = input()
     if i not in df:
         print('\nDisplaying chemicals and details:\n')
-        print(df[df['Chemical Name'].str.match(i, case = False)])
+        print(df[df['Chemical Name'].str.match(i, case=False)])
 
     print(input("\nDid you find it?[y/n]"))
     i = input()
@@ -61,6 +61,7 @@ def display_chem_keyword_search():
         print('Awesome!')
     else:
         print('Please enter y/n!')
+
 
 def display_destination_keyword_search():
     """'
@@ -152,7 +153,8 @@ def data_retrieve_assess_worksheet():
     # Updates assess worksheet with retrieved data
     df_undefined_values = df_undefined.values.tolist()
     SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df_undefined_values})
-    pprint (df_undefined_values)
+    pprint(df_undefined_values)
+
 
 def update_storage_worksheet():
     """
@@ -161,12 +163,13 @@ def update_storage_worksheet():
     # Retrieves full bottles to enter in assess_list
     df = pd.DataFrame(chem_inventory.get_all_records())
 
-    df_equal = df[df[['Total Amount','Amount remaining']].nunique(axis=1) == 1]
+    df_equal = df[df[['Total Amount', 'Amount remaining']].nunique(axis=1) == 1]
     print(df_equal)
 
     # Updates assess worksheet with retrieved data
     df_equal = df_equal.values.tolist()
     SHEET.values_update('storage', {'valueInputOption': 'RAW'}, {'values': df_equal})
+
 
 def update_del_items_worksheet():
     """
@@ -181,24 +184,22 @@ def update_del_items_worksheet():
 
     # Retrieves undefined bottles to enter in assess_list
     df = pd.DataFrame(chem_inventory.get_all_records())
-    df2 = df[df['Amount remaining'] == '0 g']
-    
-    if True:
-        print('Updating assess list with retrieved data..\n')
+    df2 = df[(df['Amount remaining'] == '0 g')]
+    df3 = df[(df['Amount remaining'] == '0 ml')]
 
     # concatanate two dataframes together
-    sum_df = [df1, df2]
+    sum_df = [df1, df2, df3]
+    pprint(sum_df)
     df_deleted = pd.concat(sum_df)
 
     # Updates assess worksheet with retrieved data
     df_deleted_values = df_deleted.values.tolist()
     SHEET.values_update('deleted_items', {'valueInputOption': 'RAW'}, {'values': df_deleted_values})
-    pprint (df_deleted_values)
     print(' Updating Deleted_items worksheet \n')
+
 
 # Set an initial value for selection other than the value for exit i.e. 8.
 selection = ''
-
 """
 Loop to run through the options and ask for user input.
 When user selects an option by making an input, function will get triggered.
