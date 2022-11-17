@@ -50,7 +50,7 @@ def display_chem_keyword_search():
         print(df[df['Chemical Name'].str.match(i, case = False)])
 
     print(input("\nDid you find it?[y/n]"))
-    j = input()
+    i = input()
     if input() == 'n':
         print('\nEnter a chemical keyword you are looking for: ')
         i = input()
@@ -115,11 +115,25 @@ def display_brand_search():
         print(df1)
 
 
+def update_assess_worksheet():
+    # Manual input of data
+    print('Do you want to add data? Type in the values:')
+    print('Chemical Name, Brand, Total Amount, Amount Remaining, Destination')
+    data_assess = input("Enter your data here: ")
+    processed_data = data_assess.split(",")
+    print(processed_data)
+
+    # Appends and updates assess worksheet with input data
+    assess_list = SHEET.worksheet('assess')
+    assess_list.append_row(processed_data)
+
+
 def data_retrieve_assess_worksheet():
     """
     Function to update "assess" worksheet.
+    Upon option 6 selection, undefined bottles will be retrieved.
+    The list will be updated in "assess" worksheet.
     """
-
     # create dataframe to append first row into the worksheet
     df1 = pd.DataFrame({'Chemical Name': ['Chemical Name'], 'Brand': ['Brand'], 'Total Amount': ['Total Amount'], 'Amount remaining': ['Amount remaining'], 'Destination': ['Destination']})
     df1_values = df1.values.tolist()
@@ -134,23 +148,11 @@ def data_retrieve_assess_worksheet():
     # concatanate two dataframes together
     sum_df = [df1, df2]
     df_undefined = pd.concat(sum_df)
-    print (df_undefined_values)
 
     # Updates assess worksheet with retrieved data
     df_undefined_values = df_undefined.values.tolist()
     SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df_undefined_values})
-
-def update_assess_worksheet():
-    # Manual input of data
-    print('Do you want to add data? Type in the values:')
-    print('Chemical Name, Brand, Total Amount, Amount Remaining, Destination')
-    data_assess = input("Enter your data here: ")
-    processed_data = data_assess.split(",")
-    print(processed_data)
-
-    # Appends and updates assess worksheet with input data
-    assess_list = SHEET.worksheet('assess')
-    assess_list.append_row(processed_data)
+    pprint (df_undefined_values)
 
 def update_storage_worksheet():
     """
@@ -172,7 +174,26 @@ def update_del_items_worksheet():
     Upon selection of option 8, input for data will be asked.
     Upon entry, "deleted_items" worksheet will be updated.
     """
+    # create dataframe to append first row into the worksheet
+    df1 = pd.DataFrame({'Chemical Name': ['Chemical Name'], 'Brand': ['Brand'], 'Total Amount': ['Total Amount'], 'Amount remaining': ['Amount remaining'], 'Destination': ['Destination']})
+    df1_values = df1.values.tolist()
+    SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df1_values})
 
+    # Retrieves undefined bottles to enter in assess_list
+    df = pd.DataFrame(chem_inventory.get_all_records())
+    df2 = df[df['Amount remaining'] == '0 g']
+    
+    if True:
+        print('Updating assess list with retrieved data..\n')
+
+    # concatanate two dataframes together
+    sum_df = [df1, df2]
+    df_deleted = pd.concat(sum_df)
+
+    # Updates assess worksheet with retrieved data
+    df_deleted_values = df_deleted.values.tolist()
+    SHEET.values_update('deleted_items', {'valueInputOption': 'RAW'}, {'values': df_deleted_values})
+    pprint (df_deleted_values)
     print(' Updating Deleted_items worksheet \n')
 
 # Set an initial value for selection other than the value for exit i.e. 8.
