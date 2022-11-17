@@ -43,17 +43,23 @@ def display_chem_keyword_search():
     """
     df = pd.DataFrame(chem_inventory.get_all_records())
 
-    while True:
-        print("\nEnter chemical name you are looking for: ")
+    print("\nEnter the chemical name you are looking for: ")
+    i = input()
+    if i not in df:
+        print('\nDisplaying chemicals and details:\n')
+        print(df[df['Chemical Name'].str.match(i, case = False)])
+
+    print(input("\nDid you find it?[y/n]  "))
+    j = input()
+    if input() == 'n':
+        print("\nEnter a chemical keyword you are looking for: ")
         i = input()
         if i not in df:
             print('\nDisplaying chemicals and details:\n')
             print(df[df['Chemical Name'].str.contains(i)])
 
-        if i is df:
-            print("Oops! invalid entry. Try again..\n")
-        else:
-            break
+    elif input() == 'y':
+        print(" Awesome!")
 
 
 def display_destination_keyword_search():
