@@ -49,18 +49,18 @@ def display_chem_keyword_search():
         print('\nDisplaying chemicals and details:\n')
         print(df[df['Chemical Name'].str.match(i, case = False)])
 
-    print(input("\nDid you find it?[y/n]  "))
+    print(input("\nDid you find it?[y/n]"))
     j = input()
     if input() == 'n':
-        print("\nEnter a chemical keyword you are looking for: ")
+        print('\nEnter a chemical keyword you are looking for: ')
         i = input()
         if i not in df:
             print('\nDisplaying chemicals and details:\n')
             print(df[df['Chemical Name'].str.contains(i)])
-
     elif input() == 'y':
-        print(" Awesome!")
-
+        print('Awesome!')
+    else:
+        print('Please enter y/n!')
 
 def display_destination_keyword_search():
     """'
@@ -115,12 +115,11 @@ def display_brand_search():
         print(df1)
 
 
-def update_assess_worksheet():
+def data_retrieve_assess_worksheet():
     """
     Function to update "assess" worksheet.
-    Upon selection of option 6, input for data will be asked.
-    Upon entry, "assess" worksheet will be updated.
     """
+
     # create dataframe to append first row into the worksheet
     df1 = pd.DataFrame({'Chemical Name': ['Chemical Name'], 'Brand': ['Brand'], 'Total Amount': ['Total Amount'], 'Amount remaining': ['Amount remaining'], 'Destination': ['Destination']})
     df1_values = df1.values.tolist()
@@ -135,11 +134,13 @@ def update_assess_worksheet():
     # concatanate two dataframes together
     sum_df = [df1, df2]
     df_undefined = pd.concat(sum_df)
+    print (df_undefined_values)
 
     # Updates assess worksheet with retrieved data
     df_undefined_values = df_undefined.values.tolist()
     SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df_undefined_values})
 
+def update_assess_worksheet():
     # Manual input of data
     print('Do you want to add data? Type in the values:')
     print('Chemical Name, Brand, Total Amount, Amount Remaining, Destination')
@@ -154,8 +155,6 @@ def update_assess_worksheet():
 def update_storage_worksheet():
     """
     Function to update "storage" worksheet.
-    Upon selection of option 7, input for data will be asked.
-    Upon entry, "assess" worksheet will be updated.
     """
     # Retrieves full bottles to enter in assess_list
     df = pd.DataFrame(chem_inventory.get_all_records())
@@ -167,8 +166,14 @@ def update_storage_worksheet():
     df_equal = df_equal.values.tolist()
     SHEET.values_update('storage', {'valueInputOption': 'RAW'}, {'values': df_equal})
 
+def update_del_items_worksheet():
+    """
+    Function to update "deleted_items" worksheet.
+    Upon selection of option 8, input for data will be asked.
+    Upon entry, "deleted_items" worksheet will be updated.
+    """
 
-
+    print(' Updating Deleted_items worksheet \n')
 
 # Set an initial value for selection other than the value for exit i.e. 8.
 selection = ''
@@ -206,10 +211,11 @@ while (selection != '9'):
         display_brand_search()
     elif selection == '6':
         update_assess_worksheet()
+        data_retrieve_assess_worksheet()
     elif selection == '7':
         update_storage_worksheet()
     elif selection == '8':
-        print(' Updating Deleted_items worksheet \n')
+        update_del_items_worksheet()
     elif selection == '9':
         print('You entered exit. See you later then!! \n')
     else:
