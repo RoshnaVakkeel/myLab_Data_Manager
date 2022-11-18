@@ -49,16 +49,15 @@ def display_chem_keyword_search():
         print('\nDisplaying chemicals and details:\n')
         print(df[df['Chemical Name'].str.contains(i, case=False)])
 
-    print(input('\nCould you locate it?[y/n]'))
-    i = input()
-    if input() == 'n':
-        print('\nEnter a chemical keyword again: ')
-        i = input()
+    # print('\nCould you locate it?[y/n]')
+    i = input('\nCould you locate it?[y/n]')
+    if i == 'n':
+        i = input('\nEnter more specific keyword: ')
         if i not in df:
             print('\nDisplaying chemicals and details:\n')
             print(df[df['Chemical Name'].str.match(i, case=False)])
             print('\nGreat! You got it now!!\n')
-    elif input() == 'y':
+    elif i == 'y':
         print('Awesome!')
     else:
         print('Please enter y/n!')
@@ -66,7 +65,7 @@ def display_chem_keyword_search():
 
 def display_destination_keyword_search():
     """
-    Diplays data matching destination keyword.
+    Displays data matching destination keyword.
     Upon option 3 selection, user will be asked for keyword input.
     Upon input, all rows containing the keyword will be shown.
     """
@@ -123,7 +122,7 @@ def update_assess_worksheet():
     # Manual input of data
     while True:
         print('Do you want to add data? Type in the values:')
-        print('Chemical Name, Brand, Total Amount, Amount Remaining, Destination')
+        print('For columns: A, B, C, D, E')
         data_assess = input("Enter your data here: ")
         processed_data = data_assess.split(",")
         print(processed_data)
@@ -133,10 +132,11 @@ def update_assess_worksheet():
 
         # Appends and updates assess worksheet with input data
         assess_list = SHEET.worksheet('assess')
+        print(assess_list)
         assess_list.append_row(processed_data)
         break
 
- 
+
 def validate_data(values):
     """
     Raises ValueError if strings  aren't exactly 5 values.
@@ -160,10 +160,15 @@ def data_retrieve_assess_worksheet():
     The list will be updated in "assess" worksheet.
     """
     # create dataframe to append first row into the worksheet
-    df1 = pd.DataFrame({'Chemical Name': ['Chemical Name'], 'Brand': ['Brand'], 'Total Amount': ['Total Amount'], 'Amount remaining': ['Amount remaining'], 'Destination': ['Destination']})
+    df1 = pd.DataFrame({
+        'Chemical Name': ['Chemical Name'],
+        'Brand': ['Brand'],
+        'Total Amount': ['Total Amount'],
+        'Amount remaining': ['Amount remaining'],
+        'Destination': ['Destination']
+        })
     df1_values = df1.values.tolist()
-    SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df1_values})
-
+    SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df1_values})*3
     # Retrieves undefined bottles to enter in assess_list
     df = pd.DataFrame(chem_inventory.get_all_records())
     df2 = df[df['Amount remaining'] == '']
@@ -202,10 +207,20 @@ def update_del_items_worksheet():
     Upon entry, "deleted_items" worksheet will be updated.
     """
     # create dataframe to append first row into the worksheet
-    df1 = pd.DataFrame({'Chemical Name': ['Chemical Name'], 'Brand': ['Brand'], 'Total Amount': ['Total Amount'], 'Amount remaining': ['Amount remaining'], 'Destination': ['Destination']})
+    df1 = pd.DataFrame({
+        'Chemical Name': ['Chemical Name'],
+        'Brand': ['Brand'],
+        'Total Amount': ['Total Amount'],
+        'Amount remaining': ['Amount remaining'],
+        'Destination': ['Destination']
+        })
 
     df1_values = df1.values.tolist()
-    SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df1_values})
+    SHEET.values_update(
+        'assess',
+        {'valueInputOption': 'RAW'},
+        {'values': df1_values}
+        )
 
     # Retrieves undefined bottles to enter in assess_list
     df = pd.DataFrame(chem_inventory.get_all_records())
