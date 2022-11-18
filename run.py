@@ -43,13 +43,13 @@ def display_chem_keyword_search():
     """
     df = pd.DataFrame(chem_inventory.get_all_records())
 
-    print("\nEnter the chemical name you are looking for: ")
+    print('\nEnter the chemical name you are looking for: ')
     i = input()
     if i not in df:
         print('\nDisplaying chemicals and details:\n')
         print(df[df['Chemical Name'].str.match(i, case=False)])
 
-    print(input("\nDid you find it?[y/n]"))
+    print(input('\nDid you find it?[y/n]'))
     i = input()
     if input() == 'n':
         print('\nEnter a chemical keyword you are looking for: ')
@@ -64,7 +64,7 @@ def display_chem_keyword_search():
 
 
 def display_destination_keyword_search():
-    """'
+    """
     Diplays data matching destination keyword.
     Upon option 3 selection, user will be asked for keyword input.
     Upon input, all rows containing the keyword will be shown.
@@ -105,10 +105,10 @@ def display_brand_search():
     Upon option 5 selection, user will be asked for keyword input.
     Upon input, all rows containing the keyword will be shown.
     """
-    print('Displaying the chemicals based on destination search \n')
+    print('Displaying the chemicals based on brand name search \n')
     df = pd.DataFrame(chem_inventory.get_all_records())
 
-    print("Enter the the quantity of the chemical: ")
+    print("Enter the the brand name of the chemical: ")
     i = input()
 
     if i not in df:
@@ -118,16 +118,37 @@ def display_brand_search():
 
 def update_assess_worksheet():
     # Manual input of data
-    print('Do you want to add data? Type in the values:')
-    print('Chemical Name, Brand, Total Amount, Amount Remaining, Destination')
-    data_assess = input("Enter your data here: ")
-    processed_data = data_assess.split(",")
-    print(processed_data)
+    while True:
+        print('Do you want to add data? Type in the values:')
+        print('Chemical Name, Brand, Total Amount, Amount Remaining, Destination')
+        data_assess = input("Enter your data here: ")
+        processed_data = data_assess.split(",")
+        print(processed_data)
 
-    # Appends and updates assess worksheet with input data
-    assess_list = SHEET.worksheet('assess')
-    assess_list.append_row(processed_data)
+        if validate_data(processed_data):
+            print("Data is valid!")
 
+        # Appends and updates assess worksheet with input data
+        assess_list = SHEET.worksheet('assess')
+        assess_list.append_row((processed_data))
+        break
+
+ 
+def validate_data(values):
+    """
+    Raises ValueError if strings  aren't exactly 5 values.
+    """
+    try:
+        [value for value in values]
+        if len(values) != 5:
+            raise ValueError(
+                f"Exactly 5 values required, you provided {len(values)}"
+            )
+    except ValueError as e:
+        print(f"Invalid data: {e}, please try again.\n")
+        return False
+
+    return True
 
 def data_retrieve_assess_worksheet():
     """
@@ -144,7 +165,7 @@ def data_retrieve_assess_worksheet():
     df = pd.DataFrame(chem_inventory.get_all_records())
     df2 = df[df['Amount remaining'] == '']
     if True:
-        print('Updating assess list with retrieved data..\n')
+        print('\nUpdating assess list with retrieved data..\n')
 
     # concatanate two dataframes together
     sum_df = [df1, df2]
@@ -179,6 +200,7 @@ def update_del_items_worksheet():
     """
     # create dataframe to append first row into the worksheet
     df1 = pd.DataFrame({'Chemical Name': ['Chemical Name'], 'Brand': ['Brand'], 'Total Amount': ['Total Amount'], 'Amount remaining': ['Amount remaining'], 'Destination': ['Destination']})
+
     df1_values = df1.values.tolist()
     SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df1_values})
 
@@ -195,7 +217,7 @@ def update_del_items_worksheet():
     # Updates assess worksheet with retrieved data
     df_deleted_values = df_deleted.values.tolist()
     SHEET.values_update('deleted_items', {'valueInputOption': 'RAW'}, {'values': df_deleted_values})
-    print(' Updating Deleted_items worksheet \n')
+    print('\nUpdating Deleted_items worksheet..\n')
 
 
 # Set an initial value for selection other than the value for exit i.e. 8.
@@ -206,7 +228,7 @@ When user selects an option by making an input, function will get triggered.
 """
 while (selection != '9'):
     # Providing users with options to select from.
-    print('Get started by selecting from one of these options!!')
+    print('\nSelect from one of these options to manage myLab data!!\n')
     print('1) Display all the chemical detail from chemical inventory')
     print('2) Display the chemical details based on keyword search')
     print('3) Display the chemical details based on destination search')
@@ -242,4 +264,3 @@ while (selection != '9'):
         print('You entered exit. See you later then!! \n')
     else:
         print('Please select from the list provided!\n')
-    break
