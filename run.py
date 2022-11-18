@@ -130,7 +130,7 @@ def update_assess_worksheet():
 
         # Appends and updates assess worksheet with input data
         assess_list = SHEET.worksheet('assess')
-        assess_list.append_row((processed_data))
+        assess_list.append_row(processed_data)
         break
 
  
