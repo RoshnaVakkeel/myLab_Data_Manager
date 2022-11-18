@@ -15,14 +15,15 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('mylab_data')
 
 # Welcome message to the user
-print('\nWelcome to MyLab Data Management Tool !!')
-print('Your guide to locating and updating chemical inventory.\n')
+print('\n         Welcome to MyLab Data Management Tool!!        ')
+print(' - Your guide to locating and updating chemical inventory  -\n')
 
 # Connects the worksheets of myLab spreadsheet.
 chem_inventory = SHEET.worksheet('chem_inventory')
 assess_list = SHEET.worksheet('assess')
 storage_list = SHEET.worksheet('storage')
 deleted_list = SHEET.worksheet('deleted_items')
+manual_entry_list = SHEET.worksheet('manual_entry')
 
 data = chem_inventory.get_all_values()
 
@@ -31,7 +32,7 @@ def display_all():
     """
     Diplays all data upon option 1 selection.
     """
-    print('Displaying all the chemicals in the list with its details \n')
+    print('Displaying all the chemicals with their details \n')
     pprint(data)
 
 
@@ -46,13 +47,12 @@ def display_chem_keyword_search():
     print('\nEnter the chemical name you are looking for: ')
     i = input()
     if i not in df:
-        print('\nDisplaying chemicals and details:\n')
+        print('Displaying the chemicals with their details \n')
         print(df[df['Chemical Name'].str.contains(i, case=False)])
 
-    # print('\nCould you locate it?[y/n]')
-    i = input('\nCould you locate it?[y/n]')
+    i = input('\nDid the search help you?[y/n]')
     if i == 'n':
-        i = input('\nEnter more specific keyword: ')
+        i = input('\nTry more specific keyword: ')
         if i not in df:
             print('\nDisplaying chemicals and details:\n')
             print(df[df['Chemical Name'].str.match(i, case=False)])
@@ -79,7 +79,7 @@ def display_destination_keyword_search():
         df1 = df[df['Destination'].str.contains(i, case=False)]
         print(df1)
         print('There you have it!!')
-        print('List doesn\'t fully appear? increase specificity')
+        print('List doesn\'t fully appear? try to be specific')
 
 
 def display_quantity_search():
@@ -97,8 +97,6 @@ def display_quantity_search():
     if i not in df:
         df1 = df[df['Total Amount'].str.fullmatch(i, case=False, na=False)]
         print(df1)
-    else:
-        print("Oops! Are you sure you entered the unit correctly?")
 
 
 def display_brand_search():
@@ -118,41 +116,6 @@ def display_brand_search():
         print(df1)
 
 
-def update_manual_entry_worksheet():
-    # Manual input of data
-    while True:
-        print('Do you want to add data? Type in the values:')
-        print('For columns: A, B, C, D, E')
-        data_manual = input("Enter your data here: ")
-        processed_data = data_manual.split(",")
-        print(processed_data)
-
-        if validate_data(processed_data):
-            print("Data is valid!")
-
-        # Appends and updates manual worksheet with input data
-        manual_entry_list = SHEET.worksheet('manual_entry')
-        print(manual_entry_list)
-        manual_list.append_row(processed_data)
-        break
-
-
-def validate_data(values):
-    """
-    Raises ValueError if strings  aren't exactly 5 values.
-    """
-    try:
-        [value for value in values]
-        if len(values) != 5:
-            raise ValueError(
-                f"Exactly 5 values required, you provided {len(values)}"
-            )
-    except ValueError as e:
-        print(f"Invalid data: {e}, please try again.\n")
-        return False
-
-    return True
-
 def data_retrieve_assess_worksheet():
     """
     Function to update "assess" worksheet.
@@ -168,7 +131,11 @@ def data_retrieve_assess_worksheet():
         'Destination': ['Destination']
         })
     df1_values = df1.values.tolist()
-    SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df1_values})
+    SHEET.values_update(
+        'assess',
+        {'valueInputOption': 'RAW'},
+        {'values': df1_values})
+
     # Retrieves undefined bottles to enter in assess_list
     df = pd.DataFrame(chem_inventory.get_all_records())
     df2 = df[df['Amount remaining'] == '']
@@ -181,13 +148,18 @@ def data_retrieve_assess_worksheet():
 
     # Updates assess worksheet with retrieved data
     df_undefined_values = df_undefined.values.tolist()
-    SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df_undefined_values})
+    SHEET.values_update(
+        'assess',
+        {'valueInputOption': 'RAW'},
+        {'values': df_undefined_values})
     pprint(df_undefined_values)
 
 
 def update_storage_worksheet():
     """
     Function to update "storage" worksheet.
+    Upon option 7 selection, full bottles will be retrieved.
+    The list will be updated in "storage" worksheet.
     """
     # create dataframe to append first row into the worksheet
     df1 = pd.DataFrame({
@@ -204,9 +176,10 @@ def update_storage_worksheet():
         {'values': df1_values}
         )
 
-    # Retrieves full bottles to enter in assess_list
+    # Retrieves full bottles to enter in storage_list
     df = pd.DataFrame(chem_inventory.get_all_records())
-    df_equal = df[df[['Total Amount', 'Amount remaining']].nunique(axis=1) == 1]
+    df_equal = df[df[['Total Amount', 'Amount remaining']]
+        .nunique(axis=1) == 1]
 
     # concatanate two dataframes together
     sum_df_equal = [df1, df_equal]
@@ -215,14 +188,18 @@ def update_storage_worksheet():
 
     # Updates assess worksheet with retrieved data
     df_equal_sum_values = df_equal_sum.values.tolist()
-    SHEET.values_update('storage', {'valueInputOption': 'RAW'}, {'values': df_equal_sum_values})
+    SHEET.values_update(
+        'storage',
+        {'valueInputOption': 'RAW'},
+        {'values': df_equal_sum_values})
+    print('\nUpdating storage worksheet..\n')
 
 
 def update_del_items_worksheet():
     """
     Function to update "deleted_items" worksheet.
-    Upon selection of option 8, input for data will be asked.
-    Upon entry, "deleted_items" worksheet will be updated.
+    Upon option 8 selection, empty bottles will be retrieved.
+    The list will be updated in "deleted_items" worksheet.
     """
     # create dataframe to append first row into the worksheet
     df1 = pd.DataFrame({
@@ -257,7 +234,47 @@ def update_del_items_worksheet():
         {'valueInputOption': 'RAW'},
         {'values': df_deleted_values}
         )
-    print('\nUpdating Deleted_items worksheet..\n')
+    print('\nUpdating deleted_items worksheet..\n')
+
+def update_manual_entry_worksheet():
+    """
+    Function to update "manual_entry" worksheet.
+    Upon option 9 selection, user will be asked for input.
+    User input will be appended to "manual_entry" worksheet.
+    """
+    # Manual input of data
+    while True:
+        print('Do you want to add data? Type in the values:')
+        print('For columns: A, B, C, D, E')
+        data_manual = input('Enter your data here: ')
+        processed_data = data_manual.split(",")
+        print(processed_data)
+
+        if validate_data(processed_data):
+            print('Data is valid!')
+
+        # Appends and updates manual worksheet with input data
+        print(manual_entry_list)
+        manual_entry_list.append_row(processed_data)
+        break
+        print('\nUpdating manual_entry worksheet..\n')
+
+def validate_data(values):
+    """
+    Raises ValueError if strings  aren't exactly 5 values.
+    """
+    try:
+        [value for value in values]
+        if len(values) != 5:
+            raise ValueError(
+                f"Exactly 5 values required, you provided {len(values)}"
+            )
+    except ValueError as e:
+        print(f"Invalid data: {e}, please try again.\n")
+        return False
+
+    return True
+
 
 
 # Set an initial value for selection other than the value for exit i.e. 8.
