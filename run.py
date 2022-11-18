@@ -118,22 +118,22 @@ def display_brand_search():
         print(df1)
 
 
-def update_assess_worksheet():
+def update_manual_entry_worksheet():
     # Manual input of data
     while True:
         print('Do you want to add data? Type in the values:')
         print('For columns: A, B, C, D, E')
-        data_assess = input("Enter your data here: ")
-        processed_data = data_assess.split(",")
+        data_manual = input("Enter your data here: ")
+        processed_data = data_manual.split(",")
         print(processed_data)
 
         if validate_data(processed_data):
             print("Data is valid!")
 
-        # Appends and updates assess worksheet with input data
-        assess_list = SHEET.worksheet('assess')
-        print(assess_list)
-        assess_list.append_row(processed_data)
+        # Appends and updates manual worksheet with input data
+        manual_entry_list = SHEET.worksheet('manual_entry')
+        print(manual_entry_list)
+        manual_list.append_row(processed_data)
         break
 
 
@@ -168,7 +168,7 @@ def data_retrieve_assess_worksheet():
         'Destination': ['Destination']
         })
     df1_values = df1.values.tolist()
-    SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df1_values})*3
+    SHEET.values_update('assess', {'valueInputOption': 'RAW'}, {'values': df1_values})
     # Retrieves undefined bottles to enter in assess_list
     df = pd.DataFrame(chem_inventory.get_all_records())
     df2 = df[df['Amount remaining'] == '']
@@ -189,15 +189,33 @@ def update_storage_worksheet():
     """
     Function to update "storage" worksheet.
     """
+    # create dataframe to append first row into the worksheet
+    df1 = pd.DataFrame({
+        'Chemical Name': ['Chemical Name'],
+        'Brand': ['Brand'],
+        'Total Amount': ['Total Amount'],
+        'Amount remaining': ['Amount remaining'],
+        'Destination': ['Destination']
+        })
+    df1_values = df1.values.tolist()
+    SHEET.values_update(
+        'assess',
+        {'valueInputOption': 'RAW'},
+        {'values': df1_values}
+        )
+
     # Retrieves full bottles to enter in assess_list
     df = pd.DataFrame(chem_inventory.get_all_records())
-
     df_equal = df[df[['Total Amount', 'Amount remaining']].nunique(axis=1) == 1]
-    print(df_equal)
+
+    # concatanate two dataframes together
+    sum_df_equal = [df1, df_equal]
+    pprint(sum_df_equal)
+    df_equal_sum = pd.concat(sum_df_equal)
 
     # Updates assess worksheet with retrieved data
-    df_equal = df_equal.values.tolist()
-    SHEET.values_update('storage', {'valueInputOption': 'RAW'}, {'values': df_equal})
+    df_equal_sum_values = df_equal_sum.values.tolist()
+    SHEET.values_update('storage', {'valueInputOption': 'RAW'}, {'values': df_equal_sum_values})
 
 
 def update_del_items_worksheet():
@@ -234,7 +252,11 @@ def update_del_items_worksheet():
 
     # Updates assess worksheet with retrieved data
     df_deleted_values = df_deleted.values.tolist()
-    SHEET.values_update('deleted_items', {'valueInputOption': 'RAW'}, {'values': df_deleted_values})
+    SHEET.values_update(
+        'deleted_items',
+        {'valueInputOption': 'RAW'},
+        {'values': df_deleted_values}
+        )
     print('\nUpdating Deleted_items worksheet..\n')
 
 
@@ -244,7 +266,7 @@ selection = ''
 Loop to run through the options and ask for user input.
 When user selects an option by making an input, function will get triggered.
 """
-while (selection != '9'):
+while (selection != '10'):
     # Providing users with options to select from.
     print('\nSelect from one of these options to manage myLab data!!\n')
     print('1) Display all the chemical detail from chemical inventory')
@@ -255,7 +277,8 @@ while (selection != '9'):
     print('6) Update assess list with undefined amounts')
     print('7) Update storage list with unused bottles')
     print('8) Update deleted list with empty bottles')
-    print('9) Exit\n')
+    print('9) Update manual entry sheet with manual input')
+    print('10) Exit\n')
 
     # Ask for the user's selection.
     selection = (input("What do you want the Data Manager to do? "))
@@ -272,13 +295,14 @@ while (selection != '9'):
     elif selection == '5':
         display_brand_search()
     elif selection == '6':
-        update_assess_worksheet()
         data_retrieve_assess_worksheet()
     elif selection == '7':
         update_storage_worksheet()
     elif selection == '8':
         update_del_items_worksheet()
     elif selection == '9':
+        update_manual_entry_worksheet()
+    elif selection == '10':
         print('You entered exit. See you later then!! \n')
     else:
         print('Please select from the list provided!\n')
