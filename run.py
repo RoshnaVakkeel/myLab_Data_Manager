@@ -47,16 +47,17 @@ def display_chem_keyword_search():
     i = input()
     if i not in df:
         print('\nDisplaying chemicals and details:\n')
-        print(df[df['Chemical Name'].str.match(i, case=False)])
+        print(df[df['Chemical Name'].str.contains(i, case=False)])
 
-    print(input('\nDid you find it?[y/n]'))
+    print(input('\nCould you locate it?[y/n]'))
     i = input()
     if input() == 'n':
-        print('\nEnter a chemical keyword you are looking for: ')
+        print('\nEnter a chemical keyword again: ')
         i = input()
         if i not in df:
             print('\nDisplaying chemicals and details:\n')
-            print(df[df['Chemical Name'].str.contains(i)])
+            print(df[df['Chemical Name'].str.match(i, case=False)])
+            print('\nGreat! You got it now!!\n')
     elif input() == 'y':
         print('Awesome!')
     else:
@@ -76,8 +77,10 @@ def display_destination_keyword_search():
     i = input()
 
     if i not in df:
-        df1 = df[df['Destination'].str.contains(i)]
+        df1 = df[df['Destination'].str.contains(i, case=False)]
         print(df1)
+        print('There you have it!!')
+        print('List doesn\'t fully appear? increase specificity')
 
 
 def display_quantity_search():
