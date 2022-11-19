@@ -57,6 +57,7 @@ After the whole chem_inventory worksheet is displayed, the user options for sele
 User will be asked this question  after each selection is made up until the user selects the option 10.
 
 ![Option 1 selection](images/selection_1.png)
+![Option 1 selection](images/selection_1.png)
 
 Upon option 2 selection, user will be asked to make an entry of chemical name they wish to find.
 When the user makes an entry, all the input containing results will appear on the screen. Following which, the user will be asked a question, if the search was helpful.  
