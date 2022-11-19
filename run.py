@@ -14,10 +14,6 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('mylab_data')
 
-# Welcome message to the user
-print('\n         Welcome to MyLab Data Management Tool!!        ')
-print(' - Your guide to locating and updating chemical inventory  -\n')
-
 # Connects the worksheets of myLab spreadsheet.
 chem_inventory = SHEET.worksheet('chem_inventory')
 assess_list = SHEET.worksheet('assess')
@@ -30,7 +26,7 @@ data = chem_inventory.get_all_values()
 
 def display_all():
     """
-    Diplays all data upon option 1 selection.
+    Diplays all chemical and details upon option 1 selection.
     """
     print('Displaying all the chemicals with their details \n')
     pprint(data)
@@ -95,7 +91,7 @@ def display_quantity_search():
 
     if i not in df:
         df1 = df[df['Total Amount'].str.fullmatch(i, case=False, na=False)]
-        print('Displaying the chemicals based on destination search \n')
+        print('Displaying the chemicals based on based on quantity search \n')
         print(df1)
 
 
@@ -185,7 +181,7 @@ def update_storage_worksheet():
     pprint(sum_df_same)
     df_same_sum = pd.concat(sum_df_same)
 
-    # Updates assess worksheet with retrieved data
+    # Updates storage worksheet with retrieved data
     df_same_sum_values = df_same_sum.values.tolist()
     SHEET.values_update(
         'storage',
@@ -211,7 +207,7 @@ def update_del_items_worksheet():
 
     df1_values = df1.values.tolist()
     SHEET.values_update(
-        'assess',
+        'deleted_items',
         {'valueInputOption': 'RAW'},
         {'values': df1_values}
         )
@@ -226,7 +222,7 @@ def update_del_items_worksheet():
     pprint(sum_df)
     df_deleted = pd.concat(sum_df)
 
-    # Updates assess worksheet with retrieved data
+    # Updates deleted_items worksheet with retrieved data
     df_deleted_values = df_deleted.values.tolist()
     SHEET.values_update(
         'deleted_items',
@@ -264,7 +260,7 @@ def update_manual_entry_worksheet():
 
 def validate_data(values):
     """
-    Raises ValueError if strings  aren't exactly 5 values.
+    Raises ValueError if entries aren't exactly 5 values.
     """
     try:
         [value for value in values]
@@ -279,49 +275,56 @@ def validate_data(values):
     return True
 
 
-# Set an initial value for selection other than the value for exit i.e. 8.
-selection = ''
-"""
-Loop to run through the options and ask for user input.
-When user selects an option by making an input, function will get triggered.
-"""
-while (selection != '10'):
-    # Providing users with options to select from.
-    print('\nSelect a number matching your option!!\n')
-    print('1) Display all the chemical detail from chemical inventory')
-    print('2) Display the chemical details based on keyword search')
-    print('3) Display the chemical details based on destination search')
-    print('4) Display the chemical details based on quantity search')
-    print('5) Display the chemical details based on brand name')
-    print('6) Update assess list with undefined amounts')
-    print('7) Update storage list with unused bottles')
-    print('8) Update deleted list with empty bottles')
-    print('9) Update manual entry sheet with manual input')
-    print('10) Exit\n')
+def main():
+    # Set an initial value for selection other than the value for exit i.e. 10.
+    selection = ''
+    """
+    Loop to run through the options and ask for user input.
+    When user selects an option, these functions will get triggered.
+    """
+    while (selection != '10'):
+        # Providing users with options to select from.
+        print('\nSelect a number matching your option!!\n')
+        print('1) Display all the chemical detail from chemical inventory')
+        print('2) Display the chemical details based on keyword search')
+        print('3) Display the chemical details based on destination search')
+        print('4) Display the chemical details based on quantity search')
+        print('5) Display the chemical details based on brand name')
+        print('6) Update assess list with undefined amounts')
+        print('7) Update storage list with unused bottles')
+        print('8) Update deleted list with empty bottles')
+        print('9) Update manual entry sheet with manual input')
+        print('10) Exit\n')
 
-    # Ask for the user's selection.
-    selection = (input("What do you want the Data Manager to do? \n"))
+        # Ask for the user's selection.
+        selection = (input("What do you want the Data Manager to do? \n"))
 
-    # if else conditions for user selection
-    if selection == '1':
-        display_all()
-    elif selection == '2':
-        display_chem_keyword_search()
-    elif selection == '3':
-        display_destination_keyword_search()
-    elif selection == '4':
-        display_quantity_search()
-    elif selection == '5':
-        display_brand_search()
-    elif selection == '6':
-        data_retrieve_assess_worksheet()
-    elif selection == '7':
-        update_storage_worksheet()
-    elif selection == '8':
-        update_del_items_worksheet()
-    elif selection == '9':
-        update_manual_entry_worksheet()
-    elif selection == '10':
-        print('You entered exit. See you later then!! \n')
-    else:
-        print('Please select from the list provided!\n')
+        # if else conditions for user selection
+        if selection == '1':
+            display_all()
+        elif selection == '2':
+            display_chem_keyword_search()
+        elif selection == '3':
+            display_destination_keyword_search()
+        elif selection == '4':
+            display_quantity_search()
+        elif selection == '5':
+            display_brand_search()
+        elif selection == '6':
+            data_retrieve_assess_worksheet()
+        elif selection == '7':
+            update_storage_worksheet()
+        elif selection == '8':
+            update_del_items_worksheet()
+        elif selection == '9':
+            update_manual_entry_worksheet()
+        elif selection == '10':
+            print('You entered exit. See you later then!! \n')
+        else:
+            print('Please select from the list provided!\n')
+
+
+# Welcome message to the user
+print('\n         Welcome to MyLab Data Management Tool!!        ')
+print(' - Your guide to locating and updating chemical inventory  -\n')
+main()
