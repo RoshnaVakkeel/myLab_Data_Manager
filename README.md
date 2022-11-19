@@ -130,7 +130,10 @@ This tool is created purely using Python.
 
 - <h3 id= "validation"> Validation</h3>
 
-    - <h3 id= "pep8"> PEP8 Online checker</h3>
+    - <h3 id= "pep8"> Code Institute Python Linter Test</h3>
+    Test result: No errors found.
+    ![Test result](images/python_linter_test.png)
+
 
 <h2 id="deployment">DEPLOYMENT </h2>
 
