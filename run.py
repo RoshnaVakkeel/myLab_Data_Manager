@@ -88,7 +88,6 @@ def display_quantity_search():
     Upon option 4 selection, user will be asked for keyword input.
     Upon input, all rows containing the keyword will be shown.
     """
-    
     df = pd.DataFrame(chem_inventory.get_all_records())
 
     print("Enter the exact quantity of the chemical: ")
@@ -106,7 +105,6 @@ def display_brand_search():
     Upon option 5 selection, user will be asked for keyword input.
     Upon input, all rows containing the keyword will be shown.
     """
-    
     df = pd.DataFrame(chem_inventory.get_all_records())
 
     print("Enter the the brand name of the chemical: ")
@@ -116,7 +114,7 @@ def display_brand_search():
         df1 = df[df['Brand'].str.contains(i, case=False, na=False)]
         print('Displaying the chemicals based on brand name search \n')
         print(df1)
- 
+
 
 def data_retrieve_assess_worksheet():
     """
@@ -180,20 +178,19 @@ def update_storage_worksheet():
 
     # Retrieves full bottles to enter in storage_list
     df = pd.DataFrame(chem_inventory.get_all_records())
-    df_equal = df[df[['Total Amount', 'Amount remaining']]
-        .nunique(axis=1) == 1]
+    df_same = df[df[['Total Amount', 'Amount remaining']].nunique(axis=1) == 1]
 
     # concatanate two dataframes together
-    sum_df_equal = [df1, df_equal]
-    pprint(sum_df_equal)
-    df_equal_sum = pd.concat(sum_df_equal)
+    sum_df_same = [df1, df_same]
+    pprint(sum_df_same)
+    df_same_sum = pd.concat(sum_df_same)
 
     # Updates assess worksheet with retrieved data
-    df_equal_sum_values = df_equal_sum.values.tolist()
+    df_same_sum_values = df_same_sum.values.tolist()
     SHEET.values_update(
         'storage',
         {'valueInputOption': 'RAW'},
-        {'values': df_equal_sum_values})
+        {'values': df_same_sum_values})
     print('\nUpdating storage worksheet..\n')
 
 
@@ -238,6 +235,7 @@ def update_del_items_worksheet():
         )
     print('\nUpdating deleted_items worksheet..\n')
 
+
 def update_manual_entry_worksheet():
     """
     Function to update "manual_entry" worksheet.
@@ -253,7 +251,6 @@ def update_manual_entry_worksheet():
         processed_data = data_manual.split(",")
         print(processed_data)
 
-
         if validate_data(processed_data):
             print('Data is valid!')
             print("Updating manual_entry worksheet...\n")
@@ -263,6 +260,7 @@ def update_manual_entry_worksheet():
             break
 
     return processed_data
+
 
 def validate_data(values):
     """

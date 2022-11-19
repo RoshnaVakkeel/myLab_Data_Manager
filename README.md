@@ -48,6 +48,8 @@ myLab Data Manager allows the user to sort and organise data, so that the user c
 <h2 id = "features"> FEATURES </h2>
 
 - <h3 id= "insight"> Inventory insights </h3>
+
+
 ![User greetings and first look](images/user_greeting.png)
 
 Upon selection of option 1 or when the user makes an input 1, the whole chem_inventory worksheet gets displayed on the screen. Next options will allow the user to narrow down the search further.
@@ -58,11 +60,13 @@ User will be asked this question  after each selection is made up until the user
 
 Upon option 2 selection, user will be asked to make an entry of chemical name they wish to find.
 When the user makes an entry, all the input containing results will appear on the screen. Following which, the user will be asked a question, if the search was helpful.  
+![Option 2 selection](images/selection_2_1.png)
+
 If the user selects n (no), User will be asked to enters more specific keyword. Upon input, chemical list containing exactly the typed in keyword will appear on the screen. And a message, “Great! You got it now!!’
 If the user selects y (yes),  “Awesome!”will be printed.
 If no entry, “Please enter y/n!” will be printed.
+![Upon yes/no selection](images/selection_2_2.png)
 
-![Option 2 selection](images/selection_2.png)
 
 Upon selection of option 3, user will asked to enter the destination keyword. When the user makes an destination keyword search, all the keyword containing results will appear on the screen. 
 Smaller lists will be fully visible and big lists would appear as shown below. To guide the user, a message asks the user to enter slightly more specific keyword.
@@ -95,9 +99,11 @@ Retrieved data from chemical inventory gets appended in the deleted_items worksh
 
 Upon selection of option 9, user will asked to type in the data. The values to be entered will be displayed. Only upon adding 5 values, will the manual_entry table be updated. 
 Upon selection of option 9, user will asked to add the data for manual entry. 
-If the user enters more than 5 values, “invalid input” will be displayed and user ill be asked to enter values again.
+If the user enters more than 5 values, “invalid input” will be displayed and user will be asked to enter values again.
 If the user enters valid input, then the manual_entry worksheet will get updated and a message will appear that it has been updated successfully.
-![Updating manual_entry worksheet](images/selection_9.png)
+![Validating user's data input](images/selection_9.png)
+![Updating manual_entry worksheet](images/selection_9_sheet.png)
+
     
 <h2 id="technologies">TECHNOLOGIES</h2>
 
