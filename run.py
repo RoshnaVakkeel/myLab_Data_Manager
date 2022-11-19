@@ -287,7 +287,7 @@ When user selects an option by making an input, function will get triggered.
 """
 while (selection != '10'):
     # Providing users with options to select from.
-    print('\nSelect from one of these options to manage myLab data!!\n')
+    print('\nSelect a number matching your option!!\n')
     print('1) Display all the chemical detail from chemical inventory')
     print('2) Display the chemical details based on keyword search')
     print('3) Display the chemical details based on destination search')
