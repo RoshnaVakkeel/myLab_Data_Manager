@@ -50,9 +50,9 @@ def display_chem_keyword_search():
         print('Displaying the chemicals with their details \n')
         print(df[df['Chemical Name'].str.contains(i, case=False)])
 
-    i = input('\nDid the search help you?[y/n]')
+    i = input('\nDid the search help you?[y/n]\n')
     if i == 'n':
-        i = input('\nTry more specific keyword: ')
+        i = input('\nTry more specific keyword: \n')
         if i not in df:
             print('\nDisplaying chemicals and details:\n')
             print(df[df['Chemical Name'].str.match(i, case=False)])
@@ -246,7 +246,7 @@ def update_manual_entry_worksheet():
     while True:
         print('Do you want to add data? Type in the values:')
         print('Chem name, Brand, Total Amt., Amt. left, Destination')
-        data_manual = input('Enter your data here: ')
+        data_manual = input('Enter your data here: \n')
 
         processed_data = data_manual.split(",")
         print(processed_data)
@@ -300,7 +300,7 @@ while (selection != '10'):
     print('10) Exit\n')
 
     # Ask for the user's selection.
-    selection = (input("What do you want the Data Manager to do? "))
+    selection = (input("What do you want the Data Manager to do? \n"))
 
     # if else conditions for user selection
     if selection == '1':
