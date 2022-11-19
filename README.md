@@ -1,5 +1,11 @@
-# myLab Data Manager
-myLab Data Manager allows the user to sort and organise data, so that the user can easily search and locate chemicals. After locating the items, the user can transfer the chemicals to the different worksheets based on the remaining quantity of the chemicals. 
+# myLab DATA MANAGER
+https://mylab-data-manager.herokuapp.com/
+## PURPOSE
+myLab Data Manager allows the user to sort, organise and manipulate data from myLab chemical inventory list. The can easily visualize the information using just a few clicks and inputs. After locating the items, the user can also transfer the chemicals to the different worksheets and manage data by evaluating the remaining quantity of the chemicals. 
+
+## PERSPECTIVE
+As a chemist, who has seen chemical inventories evolve over the years. It used to be lab records earlier, then arrived excel sheets saved on computers, then it became connected with internet and shared. Nowadays it has evolved to electronic chemical inventories, where one can visualize entire institutes inventories at one place, allowing the lab inventory organisation using auditing trail for every sample. it means there can be easy exchange of information and very smooth sharing mechanism possible. 
+This idea of myLab data manager can be easily extended to make a similar application in combination with excel sheet. Using which one can update the list and organize data without individually going and searching long lists of excel worksheets but just entering a small keyword and the required piece of information would be presented to the user.  
 
 ## CONTENTS
 - <a href= "#ux">User Experience UX </a> 
@@ -40,12 +46,14 @@ myLab Data Manager allows the user to sort and organise data, so that the user c
 
 - <h3 id="struture">  Data Manager Structure </h3>
     The Data Manager Structure consists of..
+    ![User greetings and first look](images/user_greeting.png)
 
 - <h3 id="flowchart"> Flow chart </h3>
 
     <img src = "..">
 
 <h2 id = "features"> FEATURES </h2>
+User can search and locate chemicals using chemical name, brand name, quantity based or destination keyword search.
 
 - <h3 id= "insight"> Inventory insights </h3>
 
@@ -150,8 +158,21 @@ GitHub pages were used to deploy the site. The steps to activate Github pages:
 <h2 id= "credits"> CREDITS </h2>
 
 - <h3 id= "content"> Content</h3>
-A few references used for coding:
-- Stack overflow 
+    A few references other than https://learn.codeinstitute.net/ci_program/diplomainfullstacksoftwarecommoncurriculum used for coding:
+    - Stack overflow
+    - https://www.geeksforgeeks.org/
+    - https://www.w3schools.com/ 
+    - To set up while loop user selection: http://introtopython.org/while_input.html
+    - For installation of panda library: https://www.codegrepper.com/code-examples/shell/pandas+pip+install
+    - Function to set keyword search using display_chem_keyword_search(): https://www.geeksforgeeks.org/select-rows-that-contain-specific-text-using-pandas/
+    - pandas.Series.str.contains to search using keyword:
+    https://pandas.pydata.org/pandas-docs/version/0.23/generated/pandas.Series.str.contains.html
+    - Function to check empty cells in a row: https://stackoverflow.com/questions/66888339/find-empty-cells-in-rows-of-a-column-dataframe-pandas
+    - Append values to worksheet using pandas: 
+    https://medium.com/@jb.ranchana/write-and-append-dataframes-to-google-sheets-in-python-f62479460cf0
+    - To concatante dataframes: https://pandas.pydata.org/docs/user_guide/merging.html
+    - To update dataframes in worksheet: https://docs.gspread.org/en/latest/user-guide.html
+    - To update storage worksheet, two columns containing same value in a row: https://stackoverflow.com/questions/56198775/find-rows-having-same-values-in-multiple-columnsnot-all-columns-in-pandas-data
 
 - <h3 id= "media"> Media</h3>
 
