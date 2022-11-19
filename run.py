@@ -69,7 +69,6 @@ def display_destination_keyword_search():
     Upon option 3 selection, user will be asked for keyword input.
     Upon input, all rows containing the keyword will be shown.
     """
-    print('Displaying the chemicals based on destination search \n')
     df = pd.DataFrame(chem_inventory.get_all_records())
 
     print("Enter the destination name: ")
@@ -77,6 +76,7 @@ def display_destination_keyword_search():
 
     if i not in df:
         df1 = df[df['Destination'].str.contains(i, case=False)]
+        print('Displaying the chemicals based on destination search \n')
         print(df1)
         print('There you have it!!')
         print('List doesn\'t fully appear? try to be specific')
@@ -88,14 +88,15 @@ def display_quantity_search():
     Upon option 4 selection, user will be asked for keyword input.
     Upon input, all rows containing the keyword will be shown.
     """
-    print('Displaying the chemicals based on destination search \n')
+    
     df = pd.DataFrame(chem_inventory.get_all_records())
 
-    print("Enter the the quantity of the chemical: ")
+    print("Enter the exact quantity of the chemical: ")
     i = input()
 
     if i not in df:
         df1 = df[df['Total Amount'].str.fullmatch(i, case=False, na=False)]
+        print('Displaying the chemicals based on destination search \n')
         print(df1)
 
 
@@ -105,7 +106,7 @@ def display_brand_search():
     Upon option 5 selection, user will be asked for keyword input.
     Upon input, all rows containing the keyword will be shown.
     """
-    print('Displaying the chemicals based on brand name search \n')
+    
     df = pd.DataFrame(chem_inventory.get_all_records())
 
     print("Enter the the brand name of the chemical: ")
@@ -113,8 +114,9 @@ def display_brand_search():
 
     if i not in df:
         df1 = df[df['Brand'].str.contains(i, case=False, na=False)]
+        print('Displaying the chemicals based on brand name search \n')
         print(df1)
-
+ 
 
 def data_retrieve_assess_worksheet():
     """
@@ -245,19 +247,22 @@ def update_manual_entry_worksheet():
     # Manual input of data
     while True:
         print('Do you want to add data? Type in the values:')
-        print('For columns: A, B, C, D, E')
+        print('Chem name, Brand, Total Amt., Amt. left, Destination')
         data_manual = input('Enter your data here: ')
+
         processed_data = data_manual.split(",")
         print(processed_data)
 
+
         if validate_data(processed_data):
             print('Data is valid!')
+            print("Updating manual_entry worksheet...\n")
+            manual_entry_worksheet = SHEET.worksheet('manual_entry')
+            manual_entry_worksheet.append_row(processed_data)
+            print("manual_entry worksheet updated successfully.\n")
+            break
 
-        # Appends and updates manual worksheet with input data
-        print(manual_entry_list)
-        manual_entry_list.append_row(processed_data)
-        break
-        print('\nUpdating manual_entry worksheet..\n')
+    return processed_data
 
 def validate_data(values):
     """
@@ -270,11 +275,10 @@ def validate_data(values):
                 f"Exactly 5 values required, you provided {len(values)}"
             )
     except ValueError as e:
-        print(f"Invalid data: {e}, please try again.\n")
+        print(f"Invalid input: {e}, please try again.\n")
         return False
 
     return True
-
 
 
 # Set an initial value for selection other than the value for exit i.e. 8.
