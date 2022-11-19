@@ -10,7 +10,8 @@ myLab Data Manager allows the user to sort and organise data, so that the user c
     - <a href= "#structure"> Data Manager Structure</a>
     -  <a href= "#flowchart">Flowchart</a>
 -  <a href= "#features">Features</a>
-    -  <a href= "#landing">Landing Section</a>
+    -  <a href= "#insight">Inventory insights</a>
+    -  <a href= "#update">Updating Google Sheets</a>
 - <a href= "#technologies">Technologies</a>
 - <a href= "#languages">Languages Used</a>
 - <a href= "#libraries">Libraries Used</a>
@@ -46,7 +47,57 @@ myLab Data Manager allows the user to sort and organise data, so that the user c
 
 <h2 id = "features"> FEATURES </h2>
 
-- <h3 id= "landing"> Landing Section </h3>
+- <h3 id= "insight"> Inventory insights </h3>
+![User greetings and first look](images/user_greeting.png)
+
+Upon selection of option 1 or when the user makes an input 1, the whole chem_inventory worksheet gets displayed on the screen. Next options will allow the user to narrow down the search further.
+After the whole chem_inventory worksheet is displayed, the user options for selection 1-9 appears again. 
+User will be asked this question  after each selection is made up until the user selects the option 10.
+
+![Option 1 selection](images/selection_1.png)
+
+Upon option 2 selection, user will be asked to make an entry of chemical name they wish to find.
+When the user makes an entry, all the input containing results will appear on the screen. Following which, the user will be asked a question, if the search was helpful.  
+If the user selects n (no), User will be asked to enters more specific keyword. Upon input, chemical list containing exactly the typed in keyword will appear on the screen. And a message, “Great! You got it now!!’
+If the user selects y (yes),  “Awesome!”will be printed.
+If no entry, “Please enter y/n!” will be printed.
+
+![Option 2 selection](images/selection_2.png)
+
+Upon selection of option 3, user will asked to enter the destination keyword. When the user makes an destination keyword search, all the keyword containing results will appear on the screen. 
+Smaller lists will be fully visible and big lists would appear as shown below. To guide the user, a message asks the user to enter slightly more specific keyword.
+
+![Option 3 selection](images/selection_3.png)
+
+Upon selection of option 4, user will asked to enter the exact quantity input to search. When the user enters the value, all the input results will appear on the screen, which will be fully matching.
+If user doesn’t enter the exact quantity for the search, empty index will be returned.
+
+Upon selection of option 5, user will asked to enter the brand name for the search. When the user enters the keyword, all the keyword containing results will appear on the screen. 
+![Option 4 and 5 selection](images/selection_4n5.png)
+
+Upon selection of option 10, user will be given an exit message “See you later then!!”
+![Option 10 selection](images/exit.png)
+
+- <h3 id= "update"> Updating Google Sheets </h3>
+
+Retrieved data from chemical inventory list printed at the terminal, which gets appended in the assess worksheet of myLab_data spreadsheet.
+![Updating assess worksheet](images/selection_6.png)
+
+
+Data is retrieved based on the full bottles or matching values of Amount remaining column and Total Amount column. 
+Retrieved data from chemical inventory gets appended in the storage worksheet.  
+![Updating storage worksheet](images/selection_7.png)
+
+Retrieved data from chemical inventory list printed at the terminal, which gets appended in the deleted_items worksheet of myLab_data spreadsheet.
+Data is retrieved based on the empty bottles from the Amount remaining column.
+Retrieved data from chemical inventory gets appended in the deleted_items worksheet.
+![Updating deleted_items worksheet](images/selection_8.png)
+
+Upon selection of option 9, user will asked to type in the data. The values to be entered will be displayed. Only upon adding 5 values, will the manual_entry table be updated. 
+Upon selection of option 9, user will asked to add the data for manual entry. 
+If the user enters more than 5 values, “invalid input” will be displayed and user ill be asked to enter values again.
+If the user enters valid input, then the manual_entry worksheet will get updated and a message will appear that it has been updated successfully.
+![Updating manual_entry worksheet](images/selection_9.png)
     
 <h2 id="technologies">TECHNOLOGIES</h2>
 
