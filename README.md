@@ -10,8 +10,9 @@ This idea of myLab data manager can be easily extended to make a similar applica
 ## CONTENTS
 - <a href= "#ux">User Experience UX </a> 
 - <a href= "#us"> User Stories </a>
-    -  <a href= "#first-time"> First Time Visitor Goals </a>
-    -  <a href= "#returning"> Returning Visitor Goals</a>
+    -  <a href= "#user"> User Goals </a>
+    - <a href= "#creator"> Creator Goals </a>
+
 -  <a href= "#design">Design</a>
     - <a href= "#structure"> Data Manager Structure</a>
     -  <a href= "#flowchart">Flowchart</a>
@@ -36,11 +37,34 @@ This idea of myLab data manager can be easily extended to make a similar applica
 
 - <h3 id = "us"> User Stories </h3>
 
-    - <h3 id = "first-time">  First Time Visitor Goals</h3>
-        -  As a student who is looking for ...
+    - <h3 id = "user">User Goals</h3>
+        As a user of this application I want:
+    1. to be able to see options guiding how to proceed, so that parse the chemical list easily using just selecting options. 
+    2. to be able to see the whole list of chemicals and their details enlisted, so that I can make an appropriate idea how many chemicals exist in the main chemical inventory.
+    3. to be able to see the whole list of chemicals and their details enlisted, so that I can make an appropriate idea of which brands and destinations can I look for the chemicals.
+    4. to be provided options to execute keyword inputs based search, so that I don't have to type in the whole complicated chemical name to locate them.
+    4. to be provided exact input based search, so that I don't get a broad search result that needs further time to analyze.
+    5. my search be very specific, so that I can get the result directly without enetering too many details.
+    5. to be able to locate individual chemical details based on keywords search of the chemical/ brand / destination names, or quantities, so that I don't need to remember every detail of the chemical.
+    6. to be able to locate the list of undefined amounts (with missing information) and update them in assess category, so that I can look it up and add details later.
+    7. to be able to locate the fully filled bottles and update them in storage category, so that full bottles can be stored and open ones can be used.
+    8. to be able to locate the empty bottles and update them deleted_items category, so that I can have a record to know which chemicals are over.
+    9. to be able to manually input data and update them manual_entry category, so that I can add the chemicals and their details to record them.
+    10. to be able to shown the all the options until I choose to exit, so that I don't need to start the application over and over again.
 
-    - <h3 id="returning"> Returning Visitor Goals</h3>
-        - As a student who is revisiting the ...
+    - <h3 id = "creator"> Creator Goals</h3>
+
+    As a creator of this application I want:
+    1. to offer the user the list of options to choose from, so that they can proceed with just one input. 
+    1. to ask user inputs step by step by asking them questions, so that I can find their answers quickly.
+    2. to be able to help user locate the chemicals with simple keyword search, so that user doesn't need to enter large chemical names to enable search.
+    3. to be able to to help user locate the chemicals with exact search like with chemical names, so that user doesn't need to go through a large list to arrive at the answer.
+    4. to enable user to locate chemicals ith incomplete information and update assess worksheet, so thet user can have all results in one place for futher check.
+    5. to enable user to locate filled bottles and update storage worksheet, so thet they can have the information of new bottles in one place.
+    6. to enable user to locate empty bottles and update deleted_items worksheet, so thet they can have the information of deleted items in one place.
+    7. to enable user to manually enter data and update manual_entry worksheet, so thet they can add in data by typing in manually.
+    8. to show all the options until user chooses to exit, so that they don't need to start the application all over again.
+    9. to give the user a smooth way of parsing and analysing data, so that user doesn't nedd to go to excel sheet and type in names and arrive at single cells but all results in one place.
 
 <h2 id = "design"> DESIGN </h2>
 
@@ -52,9 +76,8 @@ This idea of myLab data manager can be easily extended to make a similar applica
     3. An input area for user's option selection. The user can select a number that matches the option they want to proceed with.
 
     User will be asked shown the 2nd and 3rd parts prompting user input until the user selects the option 10 (exit).
-<br>
-<br>
-![User greetings and first look](images/user_greeting.png)
+
+    ![User greetings and first page on screen](images/user_greeting.png)
 
 - <h3 id="flowchart"> Flow chart </h3>
 The flow chart was created using [Lucidchart](https://www.lucidchart.com/), a web-based diagramming application. The flow charts shown below, shows the design concept of myLab Data Manager application. It shows how upon selecting options, different kinds of lists will appear. Options 1-5 display results within the console.
