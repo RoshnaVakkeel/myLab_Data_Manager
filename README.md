@@ -68,7 +68,7 @@ This idea of myLab data manager can be easily extended to make a similar applica
 
 <h2 id = "design"> DESIGN </h2>
 
-- <h3 id="struture"> Data Manager Structure </h3>
+- <h3 id="structure"> Data Manager Structure </h3>
 
     The myLab Data Manager Structure consists of the first section that will be visible to the user consists of three parts (depicted in the following image): 
     1. Greeting to the user along with an introduction to the application.
@@ -193,28 +193,28 @@ The pprint module provides “pretty-print” to Python data structures. The for
     The dataframes and the list do not add up well. The manual data (which now appends in a new list named manula_entry) appends to the list but it appears to append from coumn E not column A, as shown in figure below.
     ![issue](images/issue.png)
 
-    I tried various methods to align the lists by coverting the manual entry list to dataframes, but they weren't fruitful. Finally I decided to make a manual_entry worksheet where the entries can be appended in a new list.
+        I tried various methods to align the lists by coverting the manual entry list to dataframes, but they weren't fruitful. Finally I decided to make a manual_entry worksheet where the entries can be appended in a new list.
 
     2. I faced a problem with an input in display_chem_keyword_search() function. When I needed two inputs in the question for the user:
 
-    print('\nDid the search help you?[y/n]\n')
-    i = input()
-    if i == 'n':
-        i = input('\nTry more specific keyword: \n')
-        if i not in df:
-            print('\nDisplaying chemicals and details:\n')
+        print('\nDid the search help you?[y/n]\n')
+        i = input()
+        if i == 'n':
+            i = input('\nTry more specific keyword: \n')
+            if i not in df:
+                print('\nDisplaying chemicals and details:\n')
 
-    This caused the function to work, but the input needed to be entered 3 or 4 times. For eg. n n n and then the print statement 'Displaying chemicals and details:' would appear.
+        This caused the function to work, but the input needed to be entered 3 or 4 times. For eg. n n n and then the print statement 'Displaying chemicals and details:' would appear.
 
-    This was solved with my mentor's help and I learnt this that one must enter 
-    i = input('\nDid the search help you?[y/n]\n') 
-    
-    rather than using
+        This was solved with my mentor's help and I learnt this that one must enter 
+        i = input('\nDid the search help you?[y/n]\n') 
+        
+        rather than using
 
-    print('\nDid the search help you?[y/n]\n')
-    i = input()
+        print('\nDid the search help you?[y/n]\n')
+        i = input()
 
-    and the problem got solved. 
+        and the problem got solved. 
     
 <h2 id="testing">TESTING </h2>
 
