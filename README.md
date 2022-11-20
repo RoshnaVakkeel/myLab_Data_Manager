@@ -167,29 +167,54 @@ Below the full description upon each option selection is described.
 
 <h3 id= "languages"> Languages Used</h3>
 
-This tool is created purely using Python.
+This tool is created purely using Python language.
 
 <h3 id= "libraries"> Libraries Used</h3>
 
-- Git - For version control
+- [Git](https://git-scm.com/) - For version control
     These commands were used for version control during project:
     - git add . - To add files before committing
     - git commit -m "type your message mentioning changes" - To commit changes to the local repository
     - git push - To push all committed changes to the GitHub repository
 
-- GitHub - To create my repositories, save and store my project files.
+- [GitHub](https://github.com/) - To create my repositories, save and store my project files.
 - [pandas](https://pandas.pydata.org/)- Python Data Analysis Library
-pandas is an open source data analysis and manipulation tool, built on top of the Python programming language. It supports Python 3.8, 3.9 and 3.10 officially. My codes are largely based on pandas code, as they contain extensive functions very ell suited for parsing and analysing data.
+pandas is an open source data analysis and manipulation tool, built on top of the Python programming language. It supports Python 3.8, 3.9 and 3.10 officially. My codes are largely based on pandas code, as they contain extensive functions very well suited for parsing and analysing data.
 - [gspread](https://docs.gspread.org/) is a Python API for Google Sheets and requires Python 3+. It allows user to open, read, write, share spreadsheets. Additionally it enables user to select, create, delete worksheets and to format cell ranges.
 - [pprint](https://docs.python.org/3/library/pprint.html) — Data pretty printer — Python 2.7, 3.5 onwards.
 The pprint module provides “pretty-print” to Python data structures. The formatted representation arranges objects on a single line if it can, and breaks them onto multiple lines if they don’t fit within the allowed width. I used it in order to visualize the lists in more user friendly style.
 
 <h2 id="issues">ISSUES AND FIXES </h2>
 
-- Design Implementation
+- Issue
 
-- Function Implementation
+    1. One of the major issues I faced was my attempt to enable manual data entry to assess list. In my early design strategy, I wanted that user can also type in input of the chemicals and details and add it to the retrieved list within the function - update_assess_worksheet(). But I couldn't achieve it because of the two lists being different in their types. As my method of retriving the data uses pandas library, the list is  extracted as dataframes.  
+    However, the manual data entry a user makes is actually comma separated values and string value needs to be converted into a list of values. Using the split() method, we break up commas and convert into list. 
+    The dataframes and the list do not add up well. The manual data (which now appends in a new list named manula_entry) appends to the list but it appears to append from coumn E not column A, as shown in figure below.
+    ![issue](images/issue.png)
 
+    I tried various methods to align the lists by coverting the manual entry list to dataframes, but they weren't fruitful. Finally I decided to make a manual_entry worksheet where the entries can be appended in a new list.
+
+    2. I faced a problem with an input in display_chem_keyword_search() function. When I needed two inputs in the question for the user:
+
+    print('\nDid the search help you?[y/n]\n')
+    i = input()
+    if i == 'n':
+        i = input('\nTry more specific keyword: \n')
+        if i not in df:
+            print('\nDisplaying chemicals and details:\n')
+
+    This caused the function to work, but the input needed to be entered 3 or 4 times. For eg. n n n and then the print statement 'Displaying chemicals and details:' would appear.
+
+    This was solved with my mentor's help and I learnt this that one must enter 
+    i = input('\nDid the search help you?[y/n]\n') 
+    
+    rather than using
+
+    print('\nDid the search help you?[y/n]\n')
+    i = input()
+
+    and the problem got solved. 
     
 <h2 id="testing">TESTING </h2>
 
@@ -201,8 +226,8 @@ As advised by tutors that pep8 no longer working, I validated Code Institute Pyt
 <h2 id="deployment">DEPLOYMENT </h2>
 
 <h3 id= "deploy"> Project Deployment on Heroku</h3>
-#### Heroku
-* myLab Data Manager application was deployed using [Heroku](https://heroku.com/) - a platform as a service (PaaS) that enables developers to build, run, and operate applications fully in the cloud. The folloing steps were followed for deployment.
+
+myLab Data Manager application was deployed using [Heroku](https://heroku.com/) - a platform as a service (PaaS) that enables developers to build, run, and operate applications fully in the cloud. The folloing steps were followed for deployment.
 
 1. Visit [Heroku.com](https://www.heroku.com/) and create a new account.
 2. Click the 'New' button on the top right corner, and select 'Create new app' from the dropdown menu,

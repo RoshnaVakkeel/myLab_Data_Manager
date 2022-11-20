@@ -112,7 +112,7 @@ def display_brand_search():
         print(df1)
 
 
-def data_retrieve_assess_worksheet():
+def update_assess_worksheet():
     """
     Function to update "assess" worksheet.
     Upon option 6 selection, undefined bottles will be retrieved.
@@ -311,7 +311,7 @@ def main():
         elif selection == '5':
             display_brand_search()
         elif selection == '6':
-            data_retrieve_assess_worksheet()
+            update_assess_worksheet()
         elif selection == '7':
             update_storage_worksheet()
         elif selection == '8':
