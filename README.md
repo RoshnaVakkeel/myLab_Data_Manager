@@ -22,11 +22,11 @@ This idea of myLab data manager can be easily extended to make a similar applica
 - <a href= "#languages">Languages Used</a>
 - <a href= "#libraries">Libraries Used</a>
 - <a href= "#issues">Issues and Fixes</a>
-- <a href= "#testing">Testing </a>
+- <a href= "#testing">Testing</a>
 - <a href= "#validation">Validation</a>
-    -  <a href= "#pep8">PEP8 Online Validator</a>
+    -  <a href= "#pep8">CI Python Linter Test</a>
 -  <a href= "#deployment">Deployment</a>
-    -  <a href= "#deploy">Project Deployment on GitHub pages</a>
+    -  <a href= "#deploy">Project Deployment on Heroku</a>
 -  <a href= "#credits">Credits</a>
     - <a href= "#content">Contents</a>
     - <a href= "#media">Media</a>
@@ -50,73 +50,94 @@ This idea of myLab data manager can be easily extended to make a similar applica
     1. Greeting to the user along with an introduction to the application.
     2. Instruction to the user followed by the options for the user to select.
     3. An input area for user's option selection. The user can select a number that matches the option they want to proceed with.
+
+    User will be asked shown the 2nd and 3rd parts prompting user input until the user selects the option 10 (exit).
 <br>
 <br>
 ![User greetings and first look](images/user_greeting.png)
 
 - <h3 id="flowchart"> Flow chart </h3>
+The flow chart was created using [Lucidchart](https://www.lucidchart.com/), a web-based diagramming application. The flow charts shown below, shows the design concept of myLab Data Manager application. It shows how upon selecting options, different kinds of lists will appear. Options 1-5 display results within the console.
 
 ![User selection flow](images/flow_chart_1.png) 
+
+Upon selecting options 6-9, the results will also appear on the console and also the simultaneous updates will be take place in Google Sheets spreadsheet 'myLab_data'.
+
 ![User selection flow](images/flow_chart_2.png)
 
 <h2 id = "features"> FEATURES </h2>
-User can search and locate chemicals using chemical name, brand name, quantity based or destination keyword search.
+Upon option selection ranging 1-5, user will be asked to make an input for keywords. User can search and locate chemicals using chemical name, brand name, quantity based or destination keyword search. If options 6-9 are selected, the retrieved data will get displayed in the console and simultaneous update of the respective worksheets will also take place. 
+Below the full description upon each option selection is described.
+
 
 - <h3 id= "insight"> Inventory insights </h3>
+    
+    - Option 1
 
-![User greetings and first look](images/user_greeting.png)
+    Upon selection of option 1 or when the user makes an input 1, the whole chem_inventory worksheet gets displayed on the screen. The google sheet being analysed has 2520 entries and the whole list will be displayed on the screen. Next options will allow the user to narrow down the search further. 
 
-Upon selection of option 1 or when the user makes an input 1, the whole chem_inventory worksheet gets displayed on the screen. Next options will allow the user to narrow down the search further.
-After the whole chem_inventory worksheet is displayed, the user options for selection 1-9 appears again. 
-User will be asked this question  after each selection is made up until the user selects the option 10.
+    ![Option 1 selection](images/selection_1.png)
 
-![Option 1 selection](images/selection_1.png)
+    - Option 2
 
-Upon option 2 selection, user will be asked to make an entry of chemical name they wish to find.
-When the user makes an entry, all the input containing results will appear on the screen. Following which, the user will be asked a question, if the search was helpful.  
-![Option 2 selection](images/selection_2_1.png)
+    Upon option 2 selection, user will be asked to make an entry of chemical name they wish to find. When the user makes an entry, all the input containing results will appear on the screen. Following which, the user will be asked a question, if the search was helpful. The result that appears on first input contains many chemicals as the search is not as a result of specific string full match.
 
-If the user selects n (no), User will be asked to enters more specific keyword. Upon input, chemical list containing exactly the typed in keyword will appear on the screen. And a message, “Great! You got it now!!’
-If the user selects y (yes),  “Awesome!”will be printed.
-If no entry, “Please enter y/n!” will be printed.
-![Upon yes/no selection](images/selection_2_2.png)
+    ![Option 2 selection](images/selection_2_1.png)
 
+    If the user selects n (no) and suggest user is not content with the result, User will be asked to enters more specific keyword. Upon even the same input, chemical list containing exactly the typed in keyword will appear on the screen. And a message, “Great! You got it now!!’
+    If the user selects y (yes),  “Awesome!”will be printed.
+    If no entry, “Please enter y/n!” will be printed.
 
-Upon selection of option 3, user will asked to enter the destination keyword. When the user makes an destination keyword search, all the keyword containing results will appear on the screen. 
-Smaller lists will be fully visible and big lists would appear as shown below. To guide the user, a message asks the user to enter slightly more specific keyword.
+    ![Upon yes/no selection](images/selection_2_2.png)
 
-![Option 3 selection](images/selection_3.png)
+    - Option 3
 
-Upon selection of option 4, user will asked to enter the exact quantity input to search. When the user enters the value, all the input results will appear on the screen, which will be fully matching.
-If user doesn’t enter the exact quantity for the search, empty index will be returned.
+    Upon selection of option 3, user will asked to enter the keyword from the destination name. When the user makes the keyword search, all the keyword containing results will appear on the screen. This is not based on full match search. 
+    Smaller lists will be fully visible and big lists would appear as shown below (i.e.not full data will be displayed). To guide the user, a message asks the user to enter slightly more specific keyword. Upon increasing specificity, the result will become more apt.
 
-Upon selection of option 5, user will asked to enter the brand name for the search. When the user enters the keyword, all the keyword containing results will appear on the screen. 
-![Option 4 and 5 selection](images/selection_4n5.png)
+    ![Option 3 selection](images/selection_3.png)
 
-Upon selection of option 10, user will be given an exit message “See you later then!!”
-![Option 10 selection](images/exit.png)
+    - Option 4
+    Upon selection of option 4, user will asked to enter the exact quantity input to search. When the user enters the value, all the input results will appear on the screen, which will be fully matching the input made. This is delibeartely made more specific, because numbers are similar and the list is too long.
+    If user doesn’t enter the exact quantity for the search, empty index will be returned.
+
+    - Option 5
+    Upon selection of option 5, user will asked to enter the brand name for the search. When the user enters the keyword, all the keyword containing results will appear on the screen. 
+
+    ![Option 4 and 5 selection](images/selection_4n5.png)
+
+    - Option 10
+
+    Upon selection of option 10, user will be given an exit message “See you later then!!”
+    ![Option 10 selection](images/exit.png)
 
 - <h3 id= "update"> Updating Google Sheets </h3>
 
-Retrieved data from chemical inventory list printed at the terminal, which gets appended in the assess worksheet of myLab_data spreadsheet.
-![Updating assess worksheet](images/selection_6.png)
+    - Option 6
 
+    Upon selection of option 6, the data containing undefined values/ empty cells in the chem_inventory main worksheet will be targeted. The list that is retrieved from chemical inventory list, wwill get printed at the terminal and also gets updated in the assess worksheet of myLab_data spreadsheet simultaneously.
+    ![Updating assess worksheet](images/selection_6.png)
 
-Data is retrieved based on the full bottles or matching values of Amount remaining column and Total Amount column. 
-Retrieved data from chemical inventory gets appended in the storage worksheet.  
-![Updating storage worksheet](images/selection_7.png)
+    - Option 7
 
-Retrieved data from chemical inventory list printed at the terminal, which gets appended in the deleted_items worksheet of myLab_data spreadsheet.
-Data is retrieved based on the empty bottles from the Amount remaining column.
-Retrieved data from chemical inventory gets appended in the deleted_items worksheet.
-![Updating deleted_items worksheet](images/selection_8.png)
+    Upon selection of option 7, the two columns 'Total Amount' and 'Amount remaining' will be searched and when both the cells contain same values, data is retrieved based on the full bottles. And the values will be displayed at the terminal and also will get updated in the 'storage' worksheet.
 
-Upon selection of option 9, user will asked to type in the data. The values to be entered will be displayed. Only upon adding 5 values, will the manual_entry table be updated. 
-Upon selection of option 9, user will asked to add the data for manual entry. 
-If the user enters more than 5 values, “invalid input” will be displayed and user will be asked to enter values again.
-If the user enters valid input, then the manual_entry worksheet will get updated and a message will appear that it has been updated successfully.
-![Validating user's data input](images/selection_9.png)
-![Updating manual_entry worksheet](images/selection_9_sheet.png)
+    ![Updating storage worksheet](images/selection_7.png)
+
+    - Option 8
+
+    Upon selection of option 8, the two column 'Amount remaining' will be searched for 0 g / 0 ml entries depicting empty bottles. Retrieved data from chemical inventory list printed at the terminal and gets updated in the 'deleted_items' worksheet of myLab_data spreadsheet.
+
+    ![Updating deleted_items worksheet](images/selection_8.png)
+
+    - Option 9
+
+    Upon selection of option 9, user will asked to add the data for manual entry. The values to be entered will be displayed. Only upon adding 5 values, will the manual_entry table be updated. 
+    If the user enters more than 5 values, “invalid input” will be displayed and user will be asked to enter values again.
+    ![Validating user's data input](images/selection_9.png)
+
+    If the user enters valid input, then the manual_entry worksheet will get updated and a message will appear that it has been updated successfully.
+    ![Updating manual_entry worksheet](images/selection_9_sheet.png)
 
     
 <h2 id="technologies">TECHNOLOGIES</h2>
@@ -149,11 +170,10 @@ The pprint module provides “pretty-print” to Python data structures. The for
     
 <h2 id="testing">TESTING </h2>
 
-- <h3 id= "validation"> Validation</h3>
-
-    - <h3 id= "pep8"> Code Institute Python Linter Test</h3>
-    Test result: No errors found.
-    ![Test result](images/python_linter_test.png)
+- <h3 id= "pep8"> Python Linter Test</h3>
+As advised by tutors that pep8 no longer working, I validated Code Institute Python linter.  Test result: No errors found. It showed no warnings or problems as in screenshot below. 
+   
+![Test result](images/python_linter_test.png)
 
 <h2 id="deployment">DEPLOYMENT </h2>
 
